@@ -1,11 +1,6 @@
 pipeline {
-
-  environment {
-    dockerimagename = "docker.io/httpd:2.4"
-    dockerImage = ""
-  }
-
-  agent any
+  
+   agent any
 
   stages {
 
@@ -18,20 +13,8 @@ pipeline {
     stage('Build image') {
       steps{
         script {
-          dockerImage = docker.build dockerimagename
-        }
-      }
-    }
-
-    stage('Pushing Image') {
-      environment {
-               registryCredential = 'dockerhublogin'
-           }
-      steps{
-        script {
-          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-            dockerImage.push("latest")
-          }
+          echo "INFO: Building Docker Image"
+          sh "docker build -t web-server:v1"
         }
       }
     }
