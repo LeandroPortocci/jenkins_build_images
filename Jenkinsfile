@@ -1,7 +1,7 @@
 pipeline {
 
   environment {
-    dockerimagename = "leandroportocci/nodeapp"
+    dockerimagename = "docker.io/httpd:2.4"
     dockerImage = ""
   }
 
