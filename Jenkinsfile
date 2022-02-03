@@ -1,11 +1,6 @@
 pipeline {
-
-  environment {
-    dockerimagename = "leandroportocci/nodeapp"
-    dockerImage = ""
-  }
-
-  agent any
+  
+   agent any
 
   stages {
 
@@ -18,20 +13,8 @@ pipeline {
     stage('Build image') {
       steps{
         script {
-          dockerImage = docker.build dockerimagename
-        }
-      }
-    }
-
-    stage('Pushing Image') {
-      environment {
-               registryCredential = 'dockerhublogin'
-           }
-      steps{
-        script {
-          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-            dockerImage.push("latest")
-          }
+          echo "INFO: Building Docker Image"
+          sh "docker build -t web-server:v1"
         }
       }
     }
@@ -39,8 +22,9 @@ pipeline {
     stage('Deploying App to Kubernetes') {
       steps {
         script {
-          kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
-        }
+          echo "INFO: Deploying App to Kubernetes" 
+          
+          }
       }
     }
 
